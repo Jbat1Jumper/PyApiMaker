@@ -5,7 +5,7 @@ PyApiMaker
 ``Written in: python 3``
 
 
-*Disclaimer: written in some kind of 3 years old kid english*
+*Disclaimer: written in some kind of 3 years old kid english (while hitting the head to the keyboard (while ...))*
 
 
 *PyApiMaker* provides utilities to easily create aplications
@@ -285,9 +285,9 @@ PyApiRpc
 
 The fun stuff.
 
-This utility uses Flask as a web server, so you need to have Flask installed.
-
 *PyApiRpc* provides a web interface to your api functions.
+
+This utility uses Flask as a web server, so you need to have Flask installed.
 
 
 PyApiRpcServer
@@ -387,13 +387,40 @@ PyApiRpcTerminal
 ----------------
 
 This is an *PyApiRpc* component made to run in a *PyApiRpcServer*.
+This is a complete terminal embedded in a web page. It uses *JQuery*, *JQueryTerminal*
+and *JQueryMouseWheel*, and they are embedded in the package and served in the server, so you
+can use this in a local network and dont worry about them.
 
+It can be used with not only with the api, but also you can reuse it for everything you need
+just defining a function.
+
+Its usage is similar to the *PyApiRpcBlueprint* but instead of adding functions you define only 
+one function which is called when someone write something in the console.
+
+To use it just do de same::
+
+	term = PyApiRpcTerminal(prefix="/terminal")
+	term.handler = 	some_function
+	server.add(term)
+
+In this case ``some_function`` must recive only a string with the text written in the conosle
+and do whatever it want. Maybe a::
+
+	def some_function(cmd):
+		if cmd == "spam":
+			return "eggs"
+		return "sorry"
+
+And there you have your interactive web shell, but its a pain to writte all the parser. So just 
+keep reading.
 
 
 PyApiParser
 ===========
 
-WIP
+This is just a parser, which automagically integrates with your api, and its the cherry of the py.
+You can add 
+
 
 Use with PyApiRpcTerminal
 -------------------------
