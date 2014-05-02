@@ -4,7 +4,9 @@ import os
 
 
 class PyRpcServer():
-    def __init__(self, name="PyRpcServer", ip="127.0.0.1", port=5000, debug=False):
+
+    def __init__(self, name="PyRpcServer", ip="127.0.0.1", port=5000,
+                 debug=False):
         self.fapp = Flask(name)
         self.name = name
         self.ip = ip
@@ -23,7 +25,9 @@ class PyRpcServer():
 
 
 class PyRpcBlueprint():
-    def __init__(self, name=None, import_name=__name__, prefix=None, action="call"):
+
+    def __init__(self, name=None, import_name=__name__, prefix=None,
+                 action="call"):
         self.name = name
         self.import_name = import_name
         self.prefix = prefix
@@ -96,7 +100,9 @@ class PyRpcBlueprint():
 
 
 class PyRpcTerminal():
-    def __init__(self, name=None, import_name=__name__, prefix=None, encode=True):
+
+    def __init__(self, name=None, import_name=__name__, prefix=None,
+                 encode=True):
         self.name = name
         self.import_name = import_name
         self.prefix = prefix
@@ -111,7 +117,8 @@ class PyRpcTerminal():
     def terminalt(self):
         d = os.path.dirname(__file__)
         with open(os.path.join(d, "resources/terminal.html"), "r") as f:
-            return render_template_string(f.read(), name=self.name, callurl="./handler")
+            return render_template_string(f.read(), name=self.name,
+                                          callurl="./handler")
 
     def resourcest(self, res):
         d = os.path.dirname(__file__)
@@ -126,7 +133,8 @@ class PyRpcTerminal():
 
     def handle_request(self):
         if not self.handler:
-            return ErrorResponse(4, "This therminal does not have a command handler")
+            return ErrorResponse(4, "This therminal does not have a "
+                                    "command handler")
         try:
             cmd = request.values.get("cmd", None)
             if not cmd:

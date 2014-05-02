@@ -2,7 +2,7 @@
 PyApiMaker
 ==========
 
-*Written in python 3*
+``Written in: python 3``
 
 
 *Disclaimer: written in some kind of 3 years old kid english*
@@ -287,22 +287,108 @@ The fun stuff.
 
 This utility uses Flask as a web server, so you need to have Flask installed.
 
-*PyApiRpc* provides 
+*PyApiRpc* provides a web interface to your api functions.
 
 
 PyApiRpcServer
 --------------
 
-WIP
+This is actually a wrapper around a Flask app. When you create it you can
+specify a name, an ip, a port, like any othere server. Also you can pass a debug=True
+for the enable de Flask debug mode (autorefresh and web stacktrace).
+This is the *PyApiRpcServer* init by default::
+
+	PyApiRpcServer(name="PyRpcServer", ip="127.0.0.1", port=5000, debug=False)
+
+Theres no magic around this, its only a server setup line. You can also specify
+the values later like::
+
+	server = PyApiRpcServer()
+	server.ip = "0.0.0.0"
+	server.port = 80
+
+There is no difference. 
+
+The *PyApiRpcServer* is only a Flask server which only serves components (Actually Flask Blueprints)
+of the PyApiRpc kind.
+You can add this components with the *add* function::
+
+	server.add(some_component)
+
+And then when you builded all you just must run the server::
+
+	server.run()
+
+And there is it, up and running.
+
 
 PyApiRpcBlueprint
 -----------------
-WIP
+
+This is an *PyApiRpc* component made to run in a *PyApiRpcServer*.
+This is some kind of a function container. It groups functions of your api and 
+serves them in a url. 
+
+To use it you just must create it, fill it with functions, and add it to an *PyApiRpcServer*.
+Just like this::
+
+	bp = PyApiRpcBlueprint(prefix="/rpc")
+	functions = myapi.findFunctions(context="web|chat|file_share")
+	bp.add(functions)
+	server.add(bp)
+
+And then the server will serve all that functions in "ip:port/rpc"
+
+How it will serve the functions is the question. Actually the blueprint makes an action 
+to the specified functions, by default the action is "call" but it can be:
+
+:call:           call the given function with the given args.
+:fancy_call:     same as above but the response gets formatted to look good in the browser.
+:help:           return the doc of the given function.
+:fancy_help:     same as above but looks good.
+
+The format in which it serves the functions is ``ip:port/prefix/<foo>?args=val``.
+
+By default it stores the functions in a dict using function key as key. You can change 
+this specifying ``only_names=True``. Be careful of adding functions with the same name.
+(Dont know if to throw an exception or just replace with the new function, the second will
+work better for future *on fly api changing*).
+
+One pattern can be, to use prefix ``/rpc/call`` for calling functions and ``/rpc/help``
+for retriving de documentation.
+
+The output (for now) its only a JSON response which wrapps the actual return of the function.
+The response always have the attributes *content*, *had_errors*, *error_code* and *error_desc*.
+And looks like any other JSON object::
+
+	{
+		"content": 42,
+		"error_code": 0,
+		"error_desc": "",
+		"had_errors": false
+	}
+
+In the *content* its where the return value will go. The *had_errors* its a boolean showing
+that everything went ok, turns false if there were exceptions. The *error_code* its something 
+that its not finished yet (the idea is that you can throw exceptions with error numbers), and 
+*error_desc* shows the exception msg.
+
+The arguments for the functions can be passed by name and also in order, but for now you cant
+mix the two forms. Passing the arguments by name its nothing but the same POST or GET call, 
+using the same names for the arguments. Passing them in order its some kind of a hack in which
+you can pass the args in order with the names ``arg0=`` ``arg1=`` . . ``arg#=`` and so on.
+
+Note that passing values by args its something not good for compatibility on code changes, and
+for your health.
+
+
 
 PyApiRpcTerminal
 ----------------
 
-WIP
+This is an *PyApiRpc* component made to run in a *PyApiRpcServer*.
+
+
 
 PyApiParser
 ===========
