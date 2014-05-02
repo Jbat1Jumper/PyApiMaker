@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>
+        Plundom RPC API Terminal
+    </title>
+    <script src="./resources/jquery.js" type="text/javascript"></script>
+</head>
+
+<body>
+	<div id="terminal"></div>
+</body>
+
+<script src="./resources/jquery.mousewheel.js"></script>
+<script src="./resources/jquery.terminal.js"></script>
+<link href="./resources/jquery.terminal.css" rel="stylesheet"/>
+<script>
+
+function is(type, obj)
+{
+    var clas = Object.prototype.toString.call(obj).slice(8, -1);
+    return obj !== undefined && obj !== null && clas === type;
+};
+
+function printResponse(response, term)
+{
+    var response = JSON.parse(response);
+    if(response.hadErrors)
+        return term.error("ERROR: " + response.errorCode + " - " + response.errorDesc);
+    if( is('String', response.content))
+        return term.echo(response.content);
+
+    term.echo(JSON.stringify(response.content, null, 4));
+};
+
+function encode(s)
+{
+    {% if encode %}
+    return s;
+    {% else %}
+    return s; // TODO
+    {% endif %}
+}
+
+jQuery(document).ready(function($) {
+    $('#terminal').terminal( function(command, term)
+    {
+        $.post("{{callurl}}",
+            "cmd= " + encode(command),
+            function (response)
+            {
+                printResponse(response, term);
+            });
+    }, 
+    {
+        greetings: '{{name}}',
+            name: '1',
+            height: $( window ).height() - 50
+    });
+});
+</script>
+
+</html>
