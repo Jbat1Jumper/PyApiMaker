@@ -232,7 +232,7 @@ Api context
 Searching the functions is not cool. But getting the functions that you need from
 some magical object its really cool. And there the *PyApiContext* came in.
 
-Your *PyApi* object has a stack (a LIFO) of of contextes. When you call *enter_context*
+Your *PyApi* object has a stack (a LIFO) of contexts. When you call *enter_context*
 you just add a context and set it like the actual context, and when you call *exit_context*
 you just go to the last context. Another example::
 
