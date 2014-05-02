@@ -2,7 +2,10 @@
 PyApiMaker
 ==========
 
-*disclaimer: written in some kind of 3 years old kid english*
+*Written in python 3*
+
+
+*Disclaimer: written in some kind of 3 years old kid english*
 
 
 *PyApiMaker* provides utilities to easily create aplications
@@ -10,7 +13,7 @@ or modules that must interact with functions.
 *PyApiFunction* encloses a python function and collects data,
 doc, and annotations of it. Then a *PyApi* stores all functions and
 manages them by context. One can also get a *PyApiContext* to 
-easily acces the functions. 
+easily access the functions of a given context.
 Some simple usage looks like this::
 
     #!/usr/bin/env python
@@ -147,7 +150,7 @@ the function in *doc* and *args*. You can easily access then with::
 	>>> foo.args
 	["a", "b"]
 
-So, this is nothing new, but its just a wrapper to oragnize the functions. 
+So, this is nothing new, but its just a wrapper to organize the functions. 
 
 Also when you add functions you can specify the name and/or context where add the
 function. Just simple like this::
@@ -157,11 +160,11 @@ function. Just simple like this::
 		pass
 
 And there are some useful functions (also used by some *PyApi* utils) like a fancy
-*\_\_repr\_\_* and a *toJson()* function::
+*\_\_repr\_\_* and a *to_json()* function::
 
 	>>> someFoo
 	<spam.eggs(a, b, c)>
-	>>> someFoo.toJson()
+	>>> someFoo.to_json()
 	{'context': 'spam', 'args': ['a', 'b', 'c'], 'name': 'eggs'}
 
 And finally with the api *context(),* you can easily open and close a 
@@ -190,32 +193,32 @@ Searching the api
 When you just have defined all your junk, you will need a way to get all the functions from
 the automagical big bag. 
 
-You can use *getFunction* to get one function which matches the specs 
-or *findFunctions* to return a list of functions. Its easier with an example.
+You can use *get_function* to get one function which matches the specs 
+or *find_functions* to return a list of functions. Its easier with an example.
 Consider the last defined functions::
 
-	>>> api.getFunction("eggs")
+	>>> api.get_function("eggs")
 	None
-	>>> api.getFunction("eggs", context="spam")
+	>>> api.get_function("eggs", context="spam")
 	<spam.eggs(a, b)>
 
 The fist attempt doesn't return nothing because ive told you about the "none" context.
-By default you are in this context and by default *getFunction* returns the function
-of the actual context, similary does *findFunctions*::
+By default you are in this context and by default *get_function* returns the function
+of the actual context, similary does *find_functions*::
 
-	>>> api.findFunctions()
+	>>> api.find_functions()
 	[]
-	>>> api.findFunctions(context="more_spam")
-	[<more_spam.eggs(a, b)> <more_spam.more_eggs(a, b)>]
+	>>> api.find_functions(context="more_spam")
+	[<more_spam.eggs(a, b)>, <more_spam.more_eggs(a, b)>]
 
 And then wildcards appear::
 
-	>>> api.findFunctions(context="*", name="eggs")
+	>>> api.find_functions(context="*", name="eggs")
 	[<spam.eggs(a, b)>, <more_spam.eggs(a, b)>]
 
 And very prehistorical regexes::
 
-	>>> api.findFunctions(context="more_spam", name="eggs|more_eggs")
+	>>> api.find_functions(context="more_spam", name="eggs|more_eggs")
 	[<more_spam.eggs(a, b)>, <more_spam.more_eggs(a, b)>]
 
 There is room for improvement. For now you can have only one function
@@ -229,17 +232,17 @@ Api context
 Searching the functions is not cool. But getting the functions that you need from
 some magical object its really cool. And there the *PyApiContext* came in.
 
-Your *PyApi* object has a stack (a LIFO) of of contextes. When you call *enterContext*
-you just add a context and set it like the actual context, and when you call *exitContext*
+Your *PyApi* object has a stack (a LIFO) of of contextes. When you call *enter_context*
+you just add a context and set it like the actual context, and when you call *exit_context*
 you just go to the last context. Another example::
 
-	api.enterContext("bar")
+	api.enter_context("bar")
 
 	@api.add()
 	def foo():
 		pass
 
-	api.exitContext()
+	api.exit_context()
 
 And then magically::
 
@@ -264,8 +267,8 @@ And by default if its called without args it gives the actual context.
 The really confortable stuff is that *PyApiContext* contains all the api functions
 that the specified context contains, and you can access them easily::
 
-	>>> ctx.someFoo
-	<someContext.someFoo(a, b, c)>
+	>>> ctx.some_foo
+	<some_context.some_foo(a, b, c)>
 
 Also you can get the object with *with .. as,* kinda like this::
 
@@ -274,13 +277,18 @@ Also you can get the object with *with .. as,* kinda like this::
 
 When you call some function which uses another context inside, you have nothing to
 worry about. If the function exits the context that she had opened the magical context
-lifo makes shure that you return to where you was.
+lifo makes sure that you return to where you were.
 
 
 PyApiRpc
 ========
 
-The fun stuff
+The fun stuff.
+
+This utility uses Flask as a web server, so you need to have Flask installed.
+
+*PyApiRpc* provides 
+
 
 PyApiRpcServer
 --------------
@@ -305,3 +313,8 @@ Use with PyApiRpcTerminal
 -------------------------
 
 WIP
+
+
+---------------------
+
+Thanks to nosemeocurrenada for nada
