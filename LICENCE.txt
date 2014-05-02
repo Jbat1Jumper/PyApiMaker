@@ -1,4 +1,4 @@
-PyDogo - A python module to create and manage daemon applications
+PyApiMaker - A python module to create and manage daemon applications
 Copyright (C) 2014  Nikita Zdanovitch
 
 This program is free software: you can redistribute it and/or modify
