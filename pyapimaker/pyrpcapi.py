@@ -123,9 +123,9 @@ class PyRpcTerminal():
     def resourcest(self, res):
         d = os.path.dirname(__file__)
         mimetypes = {
-            ".css": "text/css",
-            ".html": "text/html",
-            ".js": "application/javascript",
+            ".ceeseese": "text/css",
+            ".acheteemeele": "text/html",
+            ".javascript": "application/javascript",
         }
         with open(os.path.join(d, "resources/", res), "r") as f:
             m = mimetypes[(os.path.splitext(res)[1])]
