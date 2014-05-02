@@ -23,34 +23,34 @@ class PyRpcServer():
 
 
 class PyRpcBlueprint():
-    def __init__(self, name=None, importName=__name__, prefix=None, action="call"):
+    def __init__(self, name=None, import_name=__name__, prefix=None, action="call"):
         self.name = name
-        self.importName = importName
+        self.import_name = import_name
         self.prefix = prefix
         self.foos = {}
         self.bp = Blueprint(self.name, self.importName)
         self.action = action
-        self.actionFoo = self.getActionFromStr(self.action)
-        self.bp.route('/<func>', methods=['POST', 'GET'])(self.actionFoo)
+        self.action_foo = self._get_action_from_str(self.action)
+        self.bp.route('/<func>', methods=['POST', 'GET'])(self.action_foo)
 
-    def add(self, foos, onlyNames=False):
+    def add(self, foos, only_names=False):
         for foo in foos:
-            key = onlyNames and foo.name or foo.key
+            key = only_names and foo.name or foo.key
             self.foos[key] = foo
 
-    def getActionFromStr(self, s):
+    def _get_action_from_str(self, s):
         if s == "call":
-            return self.rpcCall
-        elif s == "fancyCall":
-            return self.rpcFancyCall
+            return self.rpc_call
+        elif s == "fancy_call":
+            return self.rpc_fancy_call
         elif s == "help":
-            return self.rpcHelp
-        elif s == "fancyHelp":
-            return self.rpcFancyHelp
+            return self.rpc_help
+        elif s == "fancy_help":
+            return self.rpc_fancy_help
         else:
             raise Exception("Invalid action")
 
-    def rpcCall(self, func):
+    def rpc_call(self, func):
         try:
             f = self.foos[func]
             args = f.args[:]
@@ -79,10 +79,10 @@ class PyRpcBlueprint():
         except Exception as e:
             return ErrorResponse(1, repr(e))
 
-    def rpcFancyCall(self, func):
-        return "<pre>{}</pre>".format(self.rpcCall(func))
+    def rpc_fancy_call(self, func):
+        return "<pre>{}</pre>".format(self.rpc_call(func))
 
-    def rpcHelp(self, func):
+    def rpc_help(self, func):
         try:
             f = self.foos[func]
             return GoodResponse(f.doc)
@@ -91,22 +91,22 @@ class PyRpcBlueprint():
         except Exception as e:
             return ErrorResponse(1, repr(e))
 
-    def rpcFancyHelp(self, func):
-        return "<pre>{}</pre>".format(self.rpcHelp(func))
+    def rpc_fancy_help(self, func):
+        return "<pre>{}</pre>".format(self.rpc_help(func))
 
 
 class PyRpcTerminal():
-    def __init__(self, name=None, importName=__name__, prefix=None, encode=True):
+    def __init__(self, name=None, import_name=__name__, prefix=None, encode=True):
         self.name = name
-        self.importName = importName
+        self.import_name = import_name
         self.prefix = prefix
-        self.bp = Blueprint(self.name, self.importName)
+        self.bp = Blueprint(self.name, self.import_name)
         self.action = None
         self.handler = None
         self.encode = encode
         self.bp.route('/')(self.terminalt)
         self.bp.route('/resources/<res>')(self.resourcest)
-        self.bp.route('/handler', methods=['POST', 'GET'])(self.handleRequest)
+        self.bp.route('/handler', methods=['POST', 'GET'])(self.handle_request)
 
     def terminalt(self):
         d = os.path.dirname(__file__)
@@ -124,7 +124,7 @@ class PyRpcTerminal():
             m = mimetypes[(os.path.splitext(res)[1])]
             return Response(f.read(), mimetype=m)
 
-    def handleRequest(self):
+    def handle_request(self):
         if not self.handler:
             return ErrorResponse(4, "This therminal does not have a command handler")
         try:

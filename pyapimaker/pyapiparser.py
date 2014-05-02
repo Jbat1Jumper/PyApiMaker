@@ -2,9 +2,9 @@ from ._util import smatch
 
 
 class PyApiParser():
-    def __init__(self, pool=None, onlyNames=False):
+    def __init__(self, pool=None, only_names=False):
         self.pool = pool or [[[]]][0][0]
-        self.onlyNames = onlyNames
+        self.only_names = only_names
 
     def split(self, cmd):
         if isinstance(cmd, list):
@@ -12,22 +12,22 @@ class PyApiParser():
         else:
             return [c for c in cmd.split(" ") if c]
 
-    def parseSysargsCall(self):
+    def parse_sysargs_call(self):
         import sys
         args = sys.argv[1: len(sys.argv)]
         r = self.call(args)
         if r:
             print(r)
 
-    def parseSysargsExtended(self):
+    def parse_sysargs_extended(self):
         import sys
         args = sys.argv[1: len(sys.argv)]
-        r = self.parseExtended(args)
+        r = self.parse_extended(args)
         if r:
             print(r)
 
 
-    def parseExtended(self, cmd):
+    def parse_extended(self, cmd):
         cmdlets = self.split(cmd)
         if not cmdlets:
             return None
@@ -46,8 +46,8 @@ class PyApiParser():
             return "must provide a function"
         kn = cmdlets.pop(0)
         for f in self.pool:
-            if (self.onlyNames and f.name == kn)\
-                    or (not self.onlyNames and f.key == kn):
+            if (self.only_names and f.name == kn)\
+                    or (not self.only_names and f.key == kn):
                 if len(cmdlets) != len(f.args):
                     return "Error: {0} takes {1} arguments,"\
                            " but {2} was given".format(f.key, len(f.args),
@@ -58,15 +58,15 @@ class PyApiParser():
     def help(self, cmd):
         cmdlets = self.split(cmd)
         if not cmdlets:
-            return self.extendedHelp()
+            return self.extended_help()
         kn = cmdlets.pop(0)
         for f in self.pool:
-            if (self.onlyNames and f.name == kn)\
-                    or (not self.onlyNames and f.key == kn):
+            if (self.only_names and f.name == kn)\
+                    or (not self.only_names and f.key == kn):
                 return f.doc
         return "no function found"
 
-    def extendedHelp(self):
+    def extended_help(self):
         return "\n"\
             "Extended parse help - aviable commands:\n\n"\
             "    call|c <foo> [args] : call a function with given args\n"\

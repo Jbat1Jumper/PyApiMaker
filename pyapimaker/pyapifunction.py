@@ -16,20 +16,20 @@ class PyApiFunction():
             args.extend(self._getwrappedargspecs(foo.__wrapped__))
         return args
 
-    def getArgNames(self):
+    def get_arg_names(self):
         return self.args[:]
 
     def call(self, *args, **kwargs):
-        self.checkAllArgsHere(*args, **kwargs)
+        self.check_all_args_here(*args, **kwargs)
         return self.func(*args, **kwargs)
 
     def __call__(self, *args, **kwargs):
         return self.call(*args, **kwargs)
 
-    def checkAllArgsHere(self, *args, **kwargs):
+    def check_all_args_here(self, *args, **kwargs):
         return True  # TODO
 
-    def toJson(self):
+    def to_json(self):
         return {"context": self.context, "name": self.name, "args": self.args}
 
     def __repr__(self):

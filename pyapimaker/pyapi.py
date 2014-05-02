@@ -4,15 +4,16 @@ from ._util import smatch
 
 
 class PyApi():
+
     def __init__(self):
         self._context = []
         self._functions = {}
 
-    def context(self, contextName=None):
-        context = contextName or self.getActualContextName()
+    def context(self, context_name=None):
+        context = context_name or self.get_actual_context_name()
         return PyApiContext(self, context)
 
-    def getActualContextName(self):
+    def get_atual_context_name(self):
         if not self._context:
             return "none"
         else:
@@ -22,33 +23,33 @@ class PyApi():
         def foo(func):
             pam = PyApiFunction(func)
             pam.name = name or pam.name
-            pam.context = context or self.getActualContextName()
+            pam.context = context or self.get_actual_context_name()
             pam.key = "%s.%s" % (str(pam.context), str(pam.name))
             self._functions[pam.key] = pam
             return pam  # before it was the original func
         return foo
 
-    def findFunctions(self, name="*", context=None):
+    def find_functions(self, name="*", context=None):
         results = []
-        context = context or self.getActualContextName()
+        context = context or self.get_actual_context_name()
         for foo in self._functions.values():
             if smatch(foo.name, name) and smatch(foo.context, context):
                 results.append(foo)
         return results
 
-    def getFunction(self, name, context=None):
-        context = context or self.getActualContextName()
+    def get_function(self, name, context=None):
+        context = context or self.get_actual_context_name()
         key = "%s.%s" % (str(context), str(name))
         if key in self._functions:
             return self._functions[key]
         return None
 
-    def enterContext(self, contextName):
-        self._context.append(contextName)
+    def enter_context(self, context_name):
+        self._context.append(context_name)
 
-    def exitContext(self, contextName=None):
+    def exit_context(self, context_name=None):
         if self._context:  # if not last
             self._context.pop(-1)  # just pop last
 
-    def discoverDirectory(self, directory):
+    def discover_directory(self, directory):
         pass
