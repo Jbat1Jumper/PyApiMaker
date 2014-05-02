@@ -419,23 +419,7 @@ PyApiParser
 ===========
 
 This is just a parser, which automagically integrates with your api, and its the cherry of the py.
-
-You can add him a bunch of api functions, and he will parse strings to call that functions.
-Also it has various modes of parsing (for now only 2).
-
-You can parse a string with with the form ``<foo_key> [arg1] [arg2] ...``, call it, and return its
-value just with *call(string)*.
-
-And another way to be more confortable managing your api is to use the *parse_extended* wich uses the 
-next format::
-
-    Extended parse help - aviable commands:
-        call|c <foo> [args] : call a function with given args
-        help|h [foo] : shows this help or function doc if aviable
-        list|l [context] [name] : list all functions and also can filter
-
-in 
-
+You can add 
 
 
 Use with PyApiRpcTerminal
