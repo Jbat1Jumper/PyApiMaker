@@ -25,7 +25,7 @@ Some simple usage looks like this::
 
     #!/usr/bin/env python
 
-    from PyApiMaker import PyApi
+    from pyapimaker import PyApi
 
     api = PyApi()
 
