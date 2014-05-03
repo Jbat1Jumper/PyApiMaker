@@ -4,4 +4,6 @@ from .pyapifunction import PyApiFunction
 
 from .pyrpcapi import PyRpcServer, PyRpcBlueprint, PyRpcTerminal
 
+from .pyrpcapi_connector import PyRpcConnector
+
 from .pyapiparser import PyApiParser

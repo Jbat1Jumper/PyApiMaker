@@ -28,15 +28,20 @@ class PyRpcServer():
 class PyRpcBlueprint():
 
     def __init__(self, name=None, import_name=__name__, prefix=None,
-                 action="call"):
+                 action="call", encode=False):
         self.name = name
         self.import_name = import_name
         self.prefix = prefix
         self.foos = {}
+        self.encode = encode
         self.bp = Blueprint(self.name, self.import_name)
         self.action = action
         self.action_foo = self._get_action_from_str(self.action)
         self.bp.route('/<func>', methods=['POST', 'GET'])(self.action_foo)
+        self.bp.route('/', methods=['POST', 'GET'])(self.ping_foo)
+
+    def ping_foo(self):
+        return GoodResponse("connection ok")
 
     def add(self, foos, only_names=False):
         for foo in foos:
