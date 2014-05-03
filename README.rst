@@ -39,22 +39,22 @@ Some simple usage looks like this::
 Index
 =====
 
-1. For what the hell is this?
-	- Some unusefull questions
+1. `For what the hell is this?`_
+	- `Some unusefull questions`_
 
-2. PyApi
-	- Create an api
-	- Defining functions
-	- Searching the api
-	- Api context
+2. `PyApi`_
+	- `Create an api`_
+	- `Defining functions`_
+	- `Searching the api`_
+	- `Api context`_
 
-3. PyRpcApi
-	- PyRpcServer
-	- PyRpcBlueprint
-	- PyRpcTerminal
+3. `PyRpcApi`_
+	- `PyRpcServer`_
+	- `PyRpcBlueprint`_
+	- `PyRpcTerminal`_
 
-4. PyApiParser
-	- Use PyApiParser with PyRpcTerminal
+4. `PyApiParser`_
+	- `Use PyApiParser with PyRpcTerminal`_
 
 
 For what the hell is this?
