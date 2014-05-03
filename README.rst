@@ -504,12 +504,13 @@ And create a shiny web terminal::
 
 	if __name__ == "__main__":
 		server = PyRpcServer()
-		terminal = PyRpcTerminal()
+		terminal = PyRpcTerminal(prefix="/terminal")
 		parser = PyApiParser()
 		parser.pool = api.find_functions()
 		terminal.handler = parser.parse_extended
 		server.add(terminal)
-
+		server.run()
+		# enjoy exploring your api at localhost:5000/terminal
 
 
 ---------------------
