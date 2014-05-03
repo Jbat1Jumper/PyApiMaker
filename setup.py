@@ -9,7 +9,7 @@ setup(
     url='https://github.com/Jbat1Jumper/PyApiMaker.git',
     license='LICENSE.txt',
     description='Provides utilities to manage and interact with your code.',
-    long_description="Some long description must go here",
+    long_description=open('README.rst', 'r').read(),
     install_requires=["flask"
-    ]
+    ],
 )
