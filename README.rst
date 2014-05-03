@@ -2,7 +2,7 @@
 PyApiMaker
 ==========
 
-``Written in: python 3``
+``Written in: python 3.3 and does not support earlier versions for now :(``
 
 
 To download and install PyApiMaker use::
