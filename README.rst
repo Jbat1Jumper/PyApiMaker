@@ -433,7 +433,7 @@ keep reading.
 PyRpcConnector
 --------------
 
-TODO: describe this
+See ./test/client_server for a working example while doc is coming.
 
 
 PyApiParser
