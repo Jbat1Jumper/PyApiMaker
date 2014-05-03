@@ -1,6 +1,6 @@
 from pyapimaker import PyApi
 from pyapimaker import PyRpcServer, PyRpcBlueprint
-
+from ast import literal_eval
 
 myapi = PyApi()
 
@@ -14,6 +14,7 @@ def foo_a():
 @myapi.add()
 def foo_b(li, num):
     print("foo_b is doing something on serverside")
+    li = literal_eval(li)
     return [s + str(num) for s in li]
 
 

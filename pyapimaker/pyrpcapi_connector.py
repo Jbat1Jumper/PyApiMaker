@@ -12,7 +12,7 @@ class PyRpcConnector():
     def is_online(self):
         try:
             url = parse.urljoin("http://mysticalserver", "//" + self.url + "/")
-            print(url)
+            # print(url)
             r = request.urlopen(url)
             if r.status != 200:
                 js = '{"content": none,"error_code": %s,"error_desc": "%s",'\
