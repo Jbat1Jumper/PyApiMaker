@@ -342,10 +342,13 @@ And then the server will serve all that functions in "ip:port/rpc"
 How it will serve the functions is the question. Actually the blueprint makes an action 
 to the specified functions, by default the action is "call" but it can be:
 
-:call:           call the given function with the given args.
-:fancy_call:     same as above but the response gets formatted to look good in the browser.
-:help:           return the doc of the given function.
-:fancy_help:     same as above but looks good.
+``call``           call the given function with the given args.
+
+``fancy_call``     same as above but the response gets formatted to look good in the browser.
+
+``help``           return the doc of the given function.
+
+``fancy_help``     same as above but looks good.
 
 The format in which it serves the functions is ``ip:port/prefix/<foo>?args=val``.
 
@@ -476,13 +479,15 @@ Which last line is equivalent to an ugly::
 
 Parser methods (for now) are listed below:
 
-----------------------      --------------------------------------------------------------
-parse_sysargs_call          calls parse_call with sys.argv
-parse_sysargs_extended      calls parse_extended with sys.argv
-parse_call 	        		call a given function with given ordered args
-parse_extended				let select if call, help, or list and then calls the subparser
-parse_help     				gets the doc of the given function
-----------------------      --------------------------------------------------------------
+``parse_sysargs_call``        calls parse_call with sys.argv
+
+``parse_sysargs_extended``    calls parse_extended with sys.argv
+
+``parse_call``           		call a given function with given ordered args
+
+``parse_extended``			let select if call, help, or list and then calls the subparser
+
+``parse_help``     			gets the doc of the given function
 
 You can create parsers at you wish and use them for creating, interactive sessions, your own 
 basic command script language, a unicorn bazooka, and other kinds of fancy stuff.
