@@ -13,7 +13,6 @@ class PyRpcServer():
         self.ip = ip
         self.port = port
         self.debug = debug
-        self.acao = acao
         self.fapp.debug = self.debug
         if self.debug:
             self.fapp.config['PROPAGATE_EXCEPTIONS'] = True
@@ -37,6 +36,7 @@ class PyRpcBlueprint():
         self.encode = encode
         self.bp = Blueprint(self.name, self.import_name)
         self.action = action
+        self.acao = acao
         self.action_foo = self._get_action_from_str(self.action)
         self.bp.route('/<func>', methods=['POST', 'GET'])(self.action_foo)
         self.bp.route('/', methods=['POST', 'GET'])(self.ping_foo)
