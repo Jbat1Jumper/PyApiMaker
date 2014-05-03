@@ -7,7 +7,7 @@ import io
 class PyRpcServer():
 
     def __init__(self, name="PyRpcServer", ip="127.0.0.1", port=5000,
-                 debug=False, acao=None):
+                 debug=False):
         self.fapp = Flask(name)
         self.name = name
         self.ip = ip
@@ -29,7 +29,7 @@ class PyRpcServer():
 class PyRpcBlueprint():
 
     def __init__(self, name=None, import_name=__name__, prefix=None,
-                 action="call", encode=False):
+                 action="call", encode=False, acao=None):
         self.name = name
         self.import_name = import_name
         self.prefix = prefix
