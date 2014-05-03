@@ -13,7 +13,7 @@ class PyApi():
         context = context_name or self.get_actual_context_name()
         return PyApiContext(self, context)
 
-    def get_atual_context_name(self):
+    def get_actual_context_name(self):
         if not self._context:
             return "none"
         else:
@@ -26,7 +26,7 @@ class PyApi():
             pam.context = context or self.get_actual_context_name()
             pam.key = "%s.%s" % (str(pam.context), str(pam.name))
             self._functions[pam.key] = pam
-            return pam  # before it was the original func
+            return func  # before it was the original func
         return foo
 
     def find_functions(self, name="*", context=None):

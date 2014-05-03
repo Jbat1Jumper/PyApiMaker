@@ -1,5 +1,6 @@
 
 class PyApiFunction():
+
     def __init__(self, func):
         from inspect import getdoc
         self.func = func

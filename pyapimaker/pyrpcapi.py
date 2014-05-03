@@ -1,7 +1,8 @@
 from flask import Flask, Blueprint, request, render_template_string, Response
 from .json_response import GoodResponse, ErrorResponse
+from zipfile import ZipFile
 import os
-
+import io
 
 class PyRpcServer():
 
@@ -32,7 +33,7 @@ class PyRpcBlueprint():
         self.import_name = import_name
         self.prefix = prefix
         self.foos = {}
-        self.bp = Blueprint(self.name, self.importName)
+        self.bp = Blueprint(self.name, self.import_name)
         self.action = action
         self.action_foo = self._get_action_from_str(self.action)
         self.bp.route('/<func>', methods=['POST', 'GET'])(self.action_foo)
@@ -116,9 +117,11 @@ class PyRpcTerminal():
 
     def terminalt(self):
         d = os.path.dirname(__file__)
-        with open(os.path.join(d, "resources/terminal.html"), "r") as f:
-            return render_template_string(f.read(), name=self.name,
-                                          callurl="./handler")
+        with ZipFile(os.path.join(d, "resources"), "r") as z:
+            with z.open("terminal.html", "r") as f:
+                f = io.TextIOWrapper(f)
+                return render_template_string(f.read(), name=self.name,
+                                              callurl="./handler")
 
     def resourcest(self, res):
         d = os.path.dirname(__file__)
@@ -127,9 +130,11 @@ class PyRpcTerminal():
             ".html": "text/html",
             ".js": "application/javascript",
         }
-        with open(os.path.join(d, "resources/", res), "r") as f:
-            m = mimetypes[(os.path.splitext(res)[1])]
-            return Response(f.read(), mimetype=m)
+        with ZipFile(os.path.join(d, "resources"), "r") as z:
+            with z.open(res, "r") as f:
+                f = io.TextIOWrapper(f)
+                m = mimetypes[(os.path.splitext(res)[1])]
+                return Response(f.read(), mimetype=m)
 
     def handle_request(self):
         if not self.handler:
