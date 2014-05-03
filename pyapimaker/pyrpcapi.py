@@ -7,12 +7,13 @@ import io
 class PyRpcServer():
 
     def __init__(self, name="PyRpcServer", ip="127.0.0.1", port=5000,
-                 debug=False):
+                 debug=False, acao=None):
         self.fapp = Flask(name)
         self.name = name
         self.ip = ip
         self.port = port
         self.debug = debug
+        self.acao = acao
         self.fapp.debug = self.debug
         if self.debug:
             self.fapp.config['PROPAGATE_EXCEPTIONS'] = True
@@ -40,8 +41,15 @@ class PyRpcBlueprint():
         self.bp.route('/<func>', methods=['POST', 'GET'])(self.action_foo)
         self.bp.route('/', methods=['POST', 'GET'])(self.ping_foo)
 
+    def set_acao(self, response):
+        if not self.acao:
+            return response
+        response = Response(response)
+        response.headers["Access-Control-Allow-Origin"] = self.acao
+        return response
+
     def ping_foo(self):
-        return GoodResponse("connection ok")
+        return self.set_acao(GoodResponse("connection ok"))
 
     def add(self, foos, only_names=False):
         for foo in foos:
@@ -73,7 +81,7 @@ class PyRpcBlueprint():
                 for arg in args:
                     kwargs[arg] = request.values.get(arg, None)
                 retval = f.call(**kwargs)
-                return GoodResponse(retval)
+                return self.set_acao(GoodResponse(retval))
             for n in range(len(args)):
                 if not "arg{}".format(n) in request.values:
                     break
@@ -82,12 +90,12 @@ class PyRpcBlueprint():
                 for n in range(len(args)):
                     oargs.append(request.values.get("arg{}".format(n)))
                 retval = f.call(*oargs)
-                return GoodResponse(retval)
-            return ErrorResponse(2, "Wrong parameters")
+                return self.set_acao(GoodResponse(retval))
+            return self.set_acao(ErrorResponse(2, "Wrong parameters"))
         except KeyError:
-            return ErrorResponse(3, "Function '" + func + "' was not found")
+            return self.set_acao(ErrorResponse(3, "Function '" + func + "' was not found"))
         except Exception as e:
-            return ErrorResponse(1, repr(e))
+            return self.set_acao(ErrorResponse(1, repr(e)))
 
     def rpc_fancy_call(self, func):
         return "<pre>{}</pre>".format(self.rpc_call(func))
@@ -95,11 +103,11 @@ class PyRpcBlueprint():
     def rpc_help(self, func):
         try:
             f = self.foos[func]
-            return GoodResponse(f.doc)
+            return self.set_acao(GoodResponse(f.doc))
         except KeyError:
-            return ErrorResponse(3, "Function '" + func + "' was not found")
+            return self.set_acao(ErrorResponse(3, "Function '" + func + "' was not found"))
         except Exception as e:
-            return ErrorResponse(1, repr(e))
+            return self.set_acao(ErrorResponse(1, repr(e)))
 
     def rpc_fancy_help(self, func):
         return "<pre>{}</pre>".format(self.rpc_help(func))

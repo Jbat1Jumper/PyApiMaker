@@ -465,7 +465,7 @@ next format::
         list|l [context] [name] : list all functions and also can filter
 
 On all cases you can just create the parser, populate it with functions and call them. You can use the 
-``sys.argv`` to get the string to parse or more better just call *parse_sysargs_call* or *parse_sysargs_extended*.
+``sys.argv`` to get the string to parse, or better, just call *parse_sysargs_call* or *parse_sysargs_extended*.
 With this you can create a shell interactive application just in a few lines::
 
 	from pyapimaker import PyApi, PyApiParser
