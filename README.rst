@@ -433,7 +433,9 @@ keep reading.
 PyRpcConnector
 --------------
 
-See ./test/client_server for a working example while doc is coming.
+See `./test/client_server <https://github.com/Jbat1Jumper/PyApiMaker/tree/master/test/client_server>`_.
+for a working example while the doc is coming from some remote country in a small container.
+
 
 
 PyApiParser
