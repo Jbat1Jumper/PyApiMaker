@@ -5,8 +5,14 @@ PyApiMaker
 ``Written in: python 3``
 
 
-*Disclaimer: written in some kind of 3 years old kid english (while hitting the head to the keyboard (while ...))*
+To download and install PyApiMaker use::
 
+	pip3 install git+https://github.com/Jbat1Jumper/PyApiMaker.git
+
+Or any python3 pip shortcut that you may have.
+
+
+*Disclaimer: written in some kind of 3 years old kid english (while hitting the head to the keyboard (while ...))*
 
 *PyApiMaker* provides utilities to easily create aplications
 or modules that must interact with functions.
@@ -14,6 +20,7 @@ or modules that must interact with functions.
 doc, and annotations of it. Then a *PyApi* stores all functions and
 manages them by context. One can also get a *PyApiContext* to 
 easily access the functions of a given context.
+
 Some simple usage looks like this::
 
     #!/usr/bin/env python
