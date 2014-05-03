@@ -59,9 +59,11 @@ Index
 	- `PyRpcServer`_
 	- `PyRpcBlueprint`_
 	- `PyRpcTerminal`_
+	- `PyRpcConnector`_
 
 4. `PyApiParser`_
 	- `Use PyApiParser with PyRpcTerminal`_
+
 
 
 For what the hell is this?
@@ -426,6 +428,12 @@ and do whatever it want. Maybe a::
 
 And there you have your interactive web shell, but its a pain to writte all the parser. So just 
 keep reading.
+
+
+PyRpcConnector
+--------------
+
+TODO: describe this
 
 
 PyApiParser
