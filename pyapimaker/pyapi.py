@@ -21,12 +21,14 @@ class PyApi():
 
     def add(self, name=None, context=None):
         def foo(func):
+            if hasattr(func, "func"):
+                func = func.func
             pam = PyApiFunction(func)
             pam.name = name or pam.name
             pam.context = context or self.get_actual_context_name()
             pam.key = "%s.%s" % (str(pam.context), str(pam.name))
             self._functions[pam.key] = pam
-            return func  # before it was the original func
+            return pam  # before it was the original func
         return foo
 
     def find_functions(self, name="*", context=None):

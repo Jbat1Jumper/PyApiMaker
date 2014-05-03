@@ -34,13 +34,13 @@ class PyApiParser():
         action = cmdlets.pop(0)
 
         if smatch(action, "call|c"):
-            return self.call(cmdlets)
+            return self.parse_call(cmdlets)
         elif smatch(action, "help|h"):
-            return self.help(cmdlets)
+            return self.parse_help(cmdlets)
         elif smatch(action, "list|ls|l"):
             return self.list(cmdlets)
 
-    def call(self, cmd):
+    def parse_call(self, cmd):
         cmdlets = self.split(cmd)
         if not cmdlets:
             return "must provide a function"
@@ -55,7 +55,7 @@ class PyApiParser():
                 return f.call(*cmdlets)
         return "no function found"
 
-    def help(self, cmd):
+    def parse_help(self, cmd):
         cmdlets = self.split(cmd)
         if not cmdlets:
             return self.extended_help()

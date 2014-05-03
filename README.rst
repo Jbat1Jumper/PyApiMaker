@@ -48,13 +48,13 @@ Index
 	- Searching the api
 	- Api context
 
-3. PyApiRpc
-	- PyApiRpcServer
-	- PyApiRpcBlueprint
-	- PyApiRpcTerminal
+3. PyRpcApi
+	- PyRpcServer
+	- PyRpcBlueprint
+	- PyRpcTerminal
 
 4. PyApiParser
-	- Use with PyApiRpcTerminal
+	- Use PyApiParser with PyRpcTerminal
 
 
 For what the hell is this?
@@ -280,37 +280,37 @@ worry about. If the function exits the context that she had opened the magical c
 lifo makes sure that you return to where you were.
 
 
-PyApiRpc
+PyRpcApi
 ========
 
 The fun stuff.
 
-*PyApiRpc* provides a web interface to your api functions.
+*PyRpcApi* provides a web interface to your api functions.
 
 This utility uses Flask as a web server, so you need to have Flask installed.
 
 
-PyApiRpcServer
+PyRpcServer
 --------------
 
 This is actually a wrapper around a Flask app. When you create it you can
 specify a name, an ip, a port, like any othere server. Also you can pass a debug=True
 for the enable de Flask debug mode (autorefresh and web stacktrace).
-This is the *PyApiRpcServer* init by default::
+This is the *PyRpcServer* init by default::
 
-	PyApiRpcServer(name="PyRpcServer", ip="127.0.0.1", port=5000, debug=False)
+	PyRpcServer(name="PyRpcServer", ip="127.0.0.1", port=5000, debug=False)
 
 Theres no magic around this, its only a server setup line. You can also specify
 the values later like::
 
-	server = PyApiRpcServer()
+	server = PyRpcServer()
 	server.ip = "0.0.0.0"
 	server.port = 80
 
 There is no difference. 
 
-The *PyApiRpcServer* is only a Flask server which only serves components (Actually Flask Blueprints)
-of the PyApiRpc kind.
+The *PyRpcServer* is only a Flask server which only serves components (Actually Flask Blueprints)
+of the PyRpcApi kind.
 You can add this components with the *add* function::
 
 	server.add(some_component)
@@ -322,17 +322,17 @@ And then when you builded all you just must run the server::
 And there is it, up and running.
 
 
-PyApiRpcBlueprint
+PyRpcBlueprint
 -----------------
 
-This is an *PyApiRpc* component made to run in a *PyApiRpcServer*.
+This is an *PyRpcApi* component made to run in a *PyRpcServer*.
 This is some kind of a function container. It groups functions of your api and 
 serves them in a url. 
 
-To use it you just must create it, fill it with functions, and add it to an *PyApiRpcServer*.
+To use it you just must create it, fill it with functions, and add it to an *PyRpcServer*.
 Just like this::
 
-	bp = PyApiRpcBlueprint(prefix="/rpc")
+	bp = PyRpcBlueprint(prefix="/rpc")
 	functions = myapi.findFunctions(context="web|chat|file_share")
 	bp.add(functions)
 	server.add(bp)
@@ -383,10 +383,10 @@ for your health.
 
 
 
-PyApiRpcTerminal
+PyRpcTerminal
 ----------------
 
-This is an *PyApiRpc* component made to run in a *PyApiRpcServer*.
+This is an *PyRpcApi* component made to run in a *PyRpcServer*.
 This is a complete terminal embedded in a web page. It uses *JQuery*, *JQueryTerminal*
 and *JQueryMouseWheel*, and they are embedded in the package and served in the server, so you
 can use this in a local network and dont worry about them.
@@ -394,16 +394,16 @@ can use this in a local network and dont worry about them.
 It can be used with not only with the api, but also you can reuse it for everything you need
 just defining a function.
 
-Its usage is similar to the *PyApiRpcBlueprint* but instead of adding functions you define only 
+Its usage is similar to the *PyRpcBlueprint* but instead of adding functions you define only 
 one function which is called when someone write something in the console.
 
 To use it just do de same::
 
-	term = PyApiRpcTerminal(prefix="/terminal")
+	term = PyRpcTerminal(prefix="/terminal")
 	term.handler = 	some_function
 	server.add(term)
 
-In this case ``some_function`` must recive only a string with the text written in the conosle
+In this case ``some_function`` must receive only a string with the text written in the conosle
 and do whatever it want. Maybe a::
 
 	def some_function(cmd):
@@ -419,13 +419,97 @@ PyApiParser
 ===========
 
 This is just a parser, which automagically integrates with your api, and its the cherry of the py.
-You can add 
+
+You can add him a bunch of api functions, and he will parse strings to call that functions.
+Also it has various modes of parsing (for now only 2).
+
+You can parse a string with with the form ``<foo_key> [arg1] [arg2] ...``, call it, and return its
+value just with *parse_call(string)*.
+
+The key used to get the function can be the actual function key or the function name, you can specify
+that with ``only_names=True`` when creating the parser, just like the blueprint.
+
+A list of all the functions that you want to expose must be in *PyApiParser.pool*. So you can do::
+
+	myparser.pool = myapi.find_functions()
+
+And another way to be more confortable managing your api is to use the *parse_extended(string)* wich uses the 
+next format::
+
+    Extended parse help - aviable commands:
+        call|c <foo> [args] : call a function with given args
+        help|h [foo] : shows this help or function doc if aviable
+        list|l [context] [name] : list all functions and also can filter
+
+On all cases you can just create the parser, populate it with functions and call them. You can use the 
+``sys.argv`` to get the string to parse or more better just call *parse_sysargs_call* or *parse_sysargs_extended*.
+With this you can create a shell interactive application just in a few lines::
+
+	from pyapimaker import PyApi, PyApiParser
+
+	api = PyApi()
+
+	@api.add(name="--help")
+	@api.add()
+	def help():
+		print("your application help")
+
+	@api.add(name="wipe-hdd")
+	def wipe_hdd(path):
+		# do_something_idiot
+
+	@api.add()
+	def version():
+		print("this app is on version 0.2.4")
+
+	id __name__ == "__main__":
+		parser = PyApiParser(only_names=True)
+		parser.pool = api.find_functions()
+		parser.parse_sysargs_call()
+
+Which last line is equivalent to an ugly::
+
+		parser.parse_call(" ".join(sys.argv[1:len(sys.argv)]))
+
+(At this moment the parser cant detect *\*args* and *\*\*kwargs*)
+(In a not so distant future there will be room for optional arguments)
+
+Parser methods (for now) are listed below:
+
+:parse_sysargs_call:        calls parse_call with sys.argv
+:parse_sysargs_extended:    calls parse_extended with sys.argv
+:parse_call:           		call a given function with given ordered args
+:parse_extended:			let select if call, help, or list and then calls the subparser
+:parse_help:     			gets the doc of the given function
+
+You can create parsers at you wish and use them for creating, interactive sessions, your own 
+basic command script language, a unicorn bazooka, and other kinds of fancy stuff.
 
 
-Use with PyApiRpcTerminal
--------------------------
+Use PyApiParser with PyRpcTerminal
+----------------------------------
 
-WIP
+I've told you that a PyRpcTerminal must receive a function which call and pass the string with 
+the command. And above I've shown you a parser which receives a string command, calls your
+api, and returns the return value. I think it will be a great idea to put them together.
+And create a shiny web terminal::
+
+	from pyapimaker import PyApi, PyRpcServer, PyRpcTerminal, PyApiParser
+
+	api = PyApi()
+
+	...
+	#define a lot of functions
+	...
+
+	if __name__ == "__main__":
+		server = PyRpcServer()
+		terminal = PyRpcTerminal()
+		parser = PyApiParser()
+		parser.pool = api.find_functions()
+		terminal.handler = parser.parse_extended
+		server.add(terminal)
+
 
 
 ---------------------
