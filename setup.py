@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='PyApiMaker',
-    version='0.1.1',
+    version='0.1.2',
     author='Nikita Zdanovitch',
     author_email='nzdanovitch@dc.uba.ar',
     packages=['pyapimaker'],
