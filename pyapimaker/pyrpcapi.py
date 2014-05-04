@@ -4,6 +4,7 @@ from zipfile import ZipFile
 import os
 import io
 
+
 class PyRpcServer():
 
     def __init__(self, name="PyRpcServer", ip="127.0.0.1", port=5000,
@@ -31,6 +32,8 @@ class PyRpcBlueprint():
                  action="call", encode=False, acao=None):
         self.name = name
         self.import_name = import_name
+        if prefix == "/":
+            prefix = None
         self.prefix = prefix
         self.foos = {}
         self.encode = encode
@@ -115,7 +118,7 @@ class PyRpcBlueprint():
 
 class PyRpcTerminal():
 
-    def __init__(self, name=None, import_name=__name__, prefix=None,
+    def __init__(self, name="PyRpcTerminal", import_name=__name__, prefix=None,
                  encode=True):
         self.name = name
         self.import_name = import_name
@@ -143,7 +146,7 @@ class PyRpcTerminal():
             ".html": "text/html",
             ".js": "application/javascript",
         }
-        with ZipFile(os.path.join(d, "resources"), "r") as z:
+        with ZipFile(os.path.join(d, "resources.pyo"), "r") as z:
             with z.open(res, "r") as f:
                 f = io.TextIOWrapper(f)
                 m = mimetypes[(os.path.splitext(res)[1])]
