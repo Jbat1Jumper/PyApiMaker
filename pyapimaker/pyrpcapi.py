@@ -47,9 +47,8 @@ class PyRpcBlueprint():
     def set_acao(self, response):
         if not self.acao:
             return response
-        response = Response(response)
+        response = Response(response, mimetype="application/json")
         response.headers["Access-Control-Allow-Origin"] = self.acao
-        response.mimetype = "application/json"
         return response
 
     def ping_foo(self):
