@@ -13,7 +13,7 @@ server = PyRpcServer(port=17887, debug=config["debug_enabled"])
 # share all api in http://localhost:17887/rpc/
 bp = PyRpcBlueprint(name="api", prefix="/rpc")
 bp.add(all_api_funcs)
-# server.add(bp)
+server.add(bp)
 
 # create a parser for all api
 parser = PyApiParser()
