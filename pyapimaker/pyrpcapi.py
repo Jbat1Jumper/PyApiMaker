@@ -99,7 +99,7 @@ class PyRpcBlueprint():
         except KeyError:
             return self.set_acao(ErrorResponse(3, "Function '" + func + "' was not found"))
         except PyApiException as e:
-            return self.set_acao(ErrorResponse(e.error_code, e.erro_desc))
+            return self.set_acao(ErrorResponse(e.error_code, e.error_desc))
         except Exception as e:
             return self.set_acao(ErrorResponse(1, repr(e)))
 
@@ -114,7 +114,7 @@ class PyRpcBlueprint():
         except KeyError:
             return self.set_acao(ErrorResponse(3, "Function '" + func + "' was not found"))
         except PyApiException as e:
-            return self.set_acao(ErrorResponse(e.error_code, e.erro_desc))
+            return self.set_acao(ErrorResponse(e.error_code, e.error_desc))
         except Exception as e:
             return self.set_acao(ErrorResponse(1, repr(e)))
 
