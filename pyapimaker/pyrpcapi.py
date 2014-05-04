@@ -45,9 +45,9 @@ class PyRpcBlueprint():
         self.bp.route('/', methods=['POST', 'GET'])(self.ping_foo)
 
     def set_acao(self, response):
+        response = Response(response, mimetype="application/json")
         if not self.acao:
             return response
-        response = Response(response, mimetype="application/json")
         response.headers["Access-Control-Allow-Origin"] = self.acao
         return response
 
