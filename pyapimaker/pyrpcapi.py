@@ -1,6 +1,7 @@
 from flask import Flask, Blueprint, request, render_template_string, Response
 from .json_response import GoodResponse, ErrorResponse
 from zipfile import ZipFile
+from .pyapiexception import PyApiException
 import os
 import io
 
@@ -97,6 +98,8 @@ class PyRpcBlueprint():
             return self.set_acao(ErrorResponse(2, "Wrong parameters"))
         except KeyError:
             return self.set_acao(ErrorResponse(3, "Function '" + func + "' was not found"))
+        except PyApiException as e:
+            return self.set_acao(ErrorResponse(e.error_code, e.erro_desc))
         except Exception as e:
             return self.set_acao(ErrorResponse(1, repr(e)))
 
@@ -110,12 +113,15 @@ class PyRpcBlueprint():
             return self.set_acao(GoodResponse(f.doc))
         except KeyError:
             return self.set_acao(ErrorResponse(3, "Function '" + func + "' was not found"))
+        except PyApiException as e:
+            return self.set_acao(ErrorResponse(e.error_code, e.erro_desc))
         except Exception as e:
             return self.set_acao(ErrorResponse(1, repr(e)))
 
     def rpc_fancy_help(self, func):
         return "<pre>{}</pre>".format(self.rpc_help(func))
         # TODO: make it more fancy
+
 
 class PyRpcTerminal():
 
@@ -167,6 +173,8 @@ class PyRpcTerminal():
                 cmd = self.decode(cmd)
             r = self.handler(cmd)
             return GoodResponse(r)
+        except PyApiException as e:
+            return ErrorResponse(e.error_code, e.erro_desc)
         except Exception as e:
             return ErrorResponse(1, repr(e))
 
