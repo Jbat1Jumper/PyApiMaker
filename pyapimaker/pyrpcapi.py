@@ -102,6 +102,7 @@ class PyRpcBlueprint():
 
     def rpc_fancy_call(self, func):
         return "<pre>{}</pre>".format(self.rpc_call(func))
+        # TODO: make it more fancy
 
     def rpc_help(self, func):
         try:
@@ -114,7 +115,7 @@ class PyRpcBlueprint():
 
     def rpc_fancy_help(self, func):
         return "<pre>{}</pre>".format(self.rpc_help(func))
-
+        # TODO: make it more fancy
 
 class PyRpcTerminal():
 

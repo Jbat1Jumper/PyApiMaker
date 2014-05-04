@@ -2,6 +2,7 @@ from ._util import smatch
 
 
 class PyApiParser():
+
     def __init__(self, pool=None, only_names=False):
         self.pool = pool or [[[]]][0][0]
         self.only_names = only_names
@@ -26,7 +27,6 @@ class PyApiParser():
         if r:
             print(r)
 
-
     def parse_extended(self, cmd):
         cmdlets = self.split(cmd)
         if not cmdlets:
@@ -41,19 +41,22 @@ class PyApiParser():
             return self.list(cmdlets)
 
     def parse_call(self, cmd):
-        cmdlets = self.split(cmd)
-        if not cmdlets:
-            return "must provide a function"
-        kn = cmdlets.pop(0)
-        for f in self.pool:
-            if (self.only_names and f.name == kn)\
-                    or (not self.only_names and f.key == kn):
-                if len(cmdlets) != len(f.args):
-                    return "Error: {0} takes {1} arguments,"\
-                           " but {2} was given".format(f.key, len(f.args),
-                                                       len(cmdlets))
-                return f.call(*cmdlets)
-        return "no function found"
+        try:
+            cmdlets = self.split(cmd)
+            if not cmdlets:
+                return "must provide a function"
+            kn = cmdlets.pop(0)
+            for f in self.pool:
+                if (self.only_names and f.name == kn)\
+                        or (not self.only_names and f.key == kn):
+                    if len(cmdlets) != len(f.args):
+                        return "Error: {0} takes {1} arguments,"\
+                               " but {2} was given".format(f.key, len(f.args),
+                                                           len(cmdlets))
+                    return f.call(*cmdlets)
+            return "no function found"
+        except Exception as e:
+            return "Error: {}".format(repr(e))
 
     def parse_help(self, cmd):
         cmdlets = self.split(cmd)
