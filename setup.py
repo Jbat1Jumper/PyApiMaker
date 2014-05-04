@@ -12,4 +12,6 @@ setup(
     long_description=open('README.rst', 'r').read(),
     install_requires=["flask"
     ],
+    package_data={'': ['pyapimaker/resources']},
+    include_package_data=True,
 )
