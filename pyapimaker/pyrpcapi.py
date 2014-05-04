@@ -123,6 +123,8 @@ class PyRpcTerminal():
         self.name = name
         self.import_name = import_name
         self.prefix = prefix
+        if prefix == "/":
+            prefix = None
         self.bp = Blueprint(self.name, self.import_name)
         self.action = None
         self.handler = None
