@@ -28,3 +28,6 @@ server.add(tbp)
 if __name__ == "__main__":
     # just run the server
     server.run()
+
+    from storage import close_everything
+    close_everything()

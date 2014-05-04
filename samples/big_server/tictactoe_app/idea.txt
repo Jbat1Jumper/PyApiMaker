@@ -1,0 +1,47 @@
+>>> tictactoe
+user: nikita
+pass: ****
+welcome to tic tac toe:
+>>> play
+starting match, you are X
+>>> show
+_ 1  2  3
+a _ | _ | _
+b _ | _ | _
+c _ | _ | _
+>>> play
+you are already playing
+>>> put X a 1
+done
+computer is playing
+done
+>>> show
+_ 1  2  3
+a X | _ | _
+b _ | O | _
+c _ | _ | _
+>>> put O a 2
+you cant, you are X
+>>> put X a 2
+done
+computer is playing
+done
+>>> show
+_ 1  2  3
+a X | X | O
+b _ | O | _
+c _ | _ | _
+>>> put X c 3
+done
+computer is playing
+done
+computer wins
+>>> show
+_ 1  2  3
+a X | X | O
+b _ | O | _
+c O | _ | X
+>>> put X c 2
+you are not playing
+>>> exit
+goodbye
