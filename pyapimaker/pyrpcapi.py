@@ -133,7 +133,7 @@ class PyRpcTerminal():
 
     def terminalt(self):
         d = os.path.dirname(__file__)
-        with ZipFile(os.path.join(d, "resources.pyo"), "r") as z:
+        with ZipFile(os.path.join(d, "resources"), "r") as z:
             with z.open("terminal.html", "r") as f:
                 f = io.TextIOWrapper(f)
                 return render_template_string(f.read(), name=self.name,
@@ -146,7 +146,7 @@ class PyRpcTerminal():
             ".html": "text/html",
             ".js": "application/javascript",
         }
-        with ZipFile(os.path.join(d, "resources.pyo"), "r") as z:
+        with ZipFile(os.path.join(d, "resources"), "r") as z:
             with z.open(res, "r") as f:
                 f = io.TextIOWrapper(f)
                 m = mimetypes[(os.path.splitext(res)[1])]
