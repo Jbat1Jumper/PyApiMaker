@@ -5,4 +5,4 @@ api = PyApi()
 # manual discover
 from . import auth
 from . import profile
-from . import storage
+from . import app_storage

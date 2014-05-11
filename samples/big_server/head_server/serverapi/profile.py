@@ -21,14 +21,14 @@ with api.context("profile"):
         Args:
             token (str): The auth token of the user.
         Returns:
-            str with the json dict of the profile
+            the json dict of the profile
         Raises:
             Invalid token - 1004
         """
         u = validate_token(token)
         with storage.context("profiles") as st:
             p = st.get(u.username)
-            return dumps(p)
+            return p
 
     @api.add()
     def update_profile(token, profile_dict):
@@ -38,7 +38,7 @@ with api.context("profile"):
         Args:
             token (str): The auth token of the user.
         Returns:
-            str with the json dict of the profile
+            the json dict of the updated profile
         Raises:
             Invalid token - 1004
         """
@@ -48,7 +48,7 @@ with api.context("profile"):
             n_p = loads(profile_dict)
             p.update(n_p)
             st.put(u.username, p)
-            return dumps(p)
+            return p
 
     @api.add()
     def update_field(token, field, value):
