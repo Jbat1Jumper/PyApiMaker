@@ -34,10 +34,11 @@ class PyRpcConnector():
 
 class PyRpcFunction():
 
-    def __init__(self, url, method, name, encode=False):
+    def __init__(self, url, method, name, encode=False, timeout=None):
         self.url = url
         self.name = name
         self.method = method
+        self.timeout = timeout
 
     def __call__(self, *args, **kwargs):
         data = {}
@@ -56,9 +57,9 @@ class PyRpcFunction():
             url = parse.urljoin(url, self.name)
 
             if self.method == "POST":
-                r = request.urlopen(url, data.encode())
+                r = request.urlopen(url, data.encode(), timeout=self.timeout)
             elif self.method == "GET":
-                r = request.urlopen(url + ("?%" % data))
+                r = request.urlopen(url + ("?%" % data), timeout=self.timeout)
             else:
                 raise Exception("Method %s not allowed" % self.method)
 

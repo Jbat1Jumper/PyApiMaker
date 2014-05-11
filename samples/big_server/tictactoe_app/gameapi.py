@@ -3,6 +3,7 @@ from connector import server, s_login, s_storage
 from game import game
 import logic
 from random import randint
+from textwrap import dedent
 import json
 
 game_api = PyApi()
@@ -61,9 +62,10 @@ with game_api.context("login"):
 
     @game_api.add(name="help")
     def _help():
-        return """you can use:
-               login <username> <password> = to login
-               exit = to exit"""
+        return dedent("""\
+            you can use:
+            login <username> <password> = to login
+            exit = to exit""")
 
     @game_api.add(name="exit", context="lobby")
     @game_api.add(name="exit")
@@ -83,11 +85,12 @@ with game_api.context("lobby"):
         if not server.is_online():
             return "server is not online"
         st = get_storage()
-        return """played a total of {played} games
-               won {win} of them
-               lost {lost} of them, with honor
-               draw {draw} of them
-               and miserably surrendered {surrender} games""".format(**st)
+        return dedent("""\
+            played a total of {played} games:
+                won {win} of them
+                lost {lost} of them, with honor
+                draw {draw} of them
+                and miserably surrendered {surrender} games""").format(**st)
 
     @game_api.add()
     def play():
@@ -106,11 +109,12 @@ with game_api.context("lobby"):
 
     @game_api.add(name="help")
     def _help():
-        return """you can use:
-               play = to start a new game
-               stats = to show your game stats
-               show = to show the game board
-               exit = to logout and exit"""
+        return dedent("""\
+            you can use:
+            play = to start a new game
+            stats = to show your game stats
+            show = to show the game board
+            exit = to logout and exit""")
 
 
 with game_api.context("play"):
@@ -121,14 +125,15 @@ with game_api.context("play"):
         for c in game.board:
             for r in c:
                 li.append(r)
-        return """
-                             1     2     3
-                         a   {}  |  {}  |  {}
-                           -----|-----------
-                         b   {}  |  {}  |  {}
-                           -----------|-----
-                         c   {}  |  {}  |  {}
-               """.format(*li)
+        return dedent("""\
+            board:
+                        1     2     3
+                    a   {}  |  {}  |  {}
+                      -----|-----------
+                    b   {}  |  {}  |  {}
+                      -----------|-----
+                    c   {}  |  {}  |  {}
+            """).format(*li)
 
     @game_api.add()
     def surrender():
@@ -186,7 +191,8 @@ with game_api.context("play"):
 
     @game_api.add()
     def help():
-        return """you can use:
-               show = shows the game board
-               surrender = coward
-               put <X|O> <row> <column> = mark the given position"""
+        return dedent("""\
+            you can use:
+            show = shows the game board
+            surrender = coward
+            put <X|O> <row> <column> = mark the given position""")
