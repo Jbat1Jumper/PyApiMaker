@@ -4,10 +4,11 @@ from .json_response import RemoteResponse
 
 class PyRpcConnector():
 
-    def __init__(self, url=None, encode=False, method="POST"):
+    def __init__(self, url=None, encode=False, method="POST", timeout=None):
         self.url = url
         self.encode = encode
         self.method = method
+        self.timeout = timeout
 
     def is_online(self):
         try:
@@ -29,7 +30,8 @@ class PyRpcConnector():
         return PyRpcContainter(self.url, self.method, context, self.encode)
 
     def bind_function(self, name):
-        return PyRpcFunction(self.url, self.method, name, self.encode)
+        return PyRpcFunction(self.url, self.method, name,
+                             self.encode, self.timeout)
 
 
 class PyRpcFunction():
