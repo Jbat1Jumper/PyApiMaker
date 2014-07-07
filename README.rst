@@ -235,7 +235,7 @@ And very prehistorical regexes::
 
 There is room for improvement. For now you can have only one function
 with the same name in one context. One idea is to have many, with
-different argspecs, but it sounds more like C function override.
+different argspecs, but it sounds more like C function overload.
 
 
 Api context
